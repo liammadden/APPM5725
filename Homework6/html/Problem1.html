@@ -1,0 +1,232 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Liam Madden</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-04"><meta name="DC.source" content="Problem1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Liam Madden</h1><!--introduction--><p>APPM 5720 Homework 6</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Abstract</a></li><li><a href="#2">Clear</a></li><li><a href="#3">Try on 1-D functions</a></li><li><a href="#4">Try on a high-dimensional quadratic</a></li><li><a href="#5">Try scaling</a></li><li><a href="#6">Can it distinguish slightly off gradients?</a></li><li><a href="#7">Now try it on our negative log-liklihood function</a></li></ul></div><h2 id="1">Abstract</h2><p>Here, we test our gradient check function. We try it on 3 1D functions: a linear one, a quadratic one, and a cubic one. We also try it on a high dimensional quadratic. Then we try it on scaled functions. Then we try it on a gradient that is slightly incorrect. And finally, we try it on our negative log-liklihood function. Displayed are the errors for each of these cases respectively. As you can see, the error is small for the 1D functions, confirming that the gradients are correct. The error is small for high dimensional quadratic as well, confirming that its gradient is correct too. Scaling make the error larger, however, it is still small enough to confirm the gradient. The error is ~30 for the incorrect gradient though, showing that the gradient is not accurate. Finally, the error is small for the negative log-liklihood function, which was what we really needed to confirm.</p><h2 id="2">Clear</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2 id="3">Try on 1-D functions</h2><pre class="codeinput">a = @(x) x^3;
+b = @(x) 3*x^2;
+c = @(x) 6*x;
+d = @(x) 6;
+x = 10;
+dx = 1;
+[h1,atest1,atest2] = gradCheck(a,b,x);
+<span class="comment">% does a'=b?</span>
+disp(min([atest1(length(h1)) atest2(length(h1))]))
+<span class="comment">% yes!</span>
+[~,btest1,btest2] = gradCheck(b,c,x);
+<span class="comment">% does b'=c?</span>
+disp(min([btest1(length(h1)) btest2(length(h1))]))
+<span class="comment">% yes!</span>
+[~,ctest1,ctest2] = gradCheck(c,d,x);
+<span class="comment">% does c'=d?</span>
+disp(min([ctest1(length(h1)) ctest2(length(h1))]))
+<span class="comment">% yes!</span>
+</pre><pre class="codeoutput">   2.2500e-04
+
+   2.2737e-12
+
+   2.2737e-13
+
+</pre><h2 id="4">Try on a high-dimensional quadratic</h2><pre class="codeinput">N = 100;
+A = rand(N);
+e = @(x) x'*A*x;
+f = @(x) (A+A')*x;
+X = ones(N,1);
+dX = randi(2,[N,1]);
+[h2,etest1,etest2] = gradCheck(e,f,X);
+<span class="comment">% does e'=f?</span>
+disp(min([etest1(length(h2)) etest2(length(h2))]))
+<span class="comment">% yes!</span>
+</pre><pre class="codeoutput">   7.4948e-11
+
+</pre><h2 id="5">Try scaling</h2><pre class="codeinput">sa = @(x) 100*a(x);
+sb = @(x) 100*b(x);
+[~,satest1,satest2] = gradCheck(sa,sb,x);
+<span class="comment">% does sa'=sb?</span>
+disp(min([satest1(length(h1)) satest2(length(h1))]))
+<span class="comment">% yes!</span>
+</pre><pre class="codeoutput">    0.0225
+
+</pre><h2 id="6">Can it distinguish slightly off gradients?</h2><pre class="codeinput">ib = @(x) .9*b(x);
+[~,iatest1,iatest2] = gradCheck(a,ib,x);
+<span class="comment">% does a'=ib?</span>
+disp(min([iatest1(length(h1)) iatest2(length(h1))]))
+<span class="comment">% no!</span>
+</pre><pre class="codeoutput">   30.0002
+
+</pre><h2 id="7">Now try it on our negative log-liklihood function</h2><pre class="codeinput">load(<span class="string">'spamData.mat'</span>)
+Xtrain = log(Xtrain+0.1);
+Xtest = log(Xtest+0.1);
+ytrain = 2*ytrain-1;
+ytest = 2*ytest-1;
+p = length(Xtrain(1,:));
+ntrain = length(Xtrain(:,1));
+ntest = length(Xtest(:,1));
+sigma = @(a) 1./(1+exp(-a));
+muTrain = @(w) sigma(ytrain.*(Xtrain*w));
+lTrain = @(w) -sum(log(muTrain(w)));
+gradlTrain = @(w) -Xtrain'*(ytrain.*(1-muTrain(w)));
+w0 = ones(p,1);
+[h,test1,test2] = gradCheck(lTrain,gradlTrain,w0);
+<span class="comment">% does lTrain'=gradlTrain?</span>
+disp(min([test1(length(h1)) test2(length(h1))]))
+<span class="comment">% yes!</span>
+</pre><pre class="codeoutput">   1.1330e-08
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Liam Madden
+% APPM 5720
+% Homework 6
+
+%% Abstract
+% Here, we test our gradient check function. We try it on 3 1D functions: a
+% linear one, a quadratic one, and a cubic one. We also try it on a high
+% dimensional quadratic. Then we try it on scaled functions. Then we try it
+% on a gradient that is slightly incorrect. And finally, we try it on our
+% negative log-liklihood function. Displayed are the errors for each of
+% these cases respectively. As you can see, the error is small for the 1D
+% functions, confirming that the gradients are correct. The error is small
+% for high dimensional quadratic as well, confirming that its gradient is
+% correct too. Scaling make the error larger, however, it is still small
+% enough to confirm the gradient. The error is ~30 for the incorrect
+% gradient though, showing that the gradient is not accurate. Finally, the
+% error is small for the negative log-liklihood function, which was what we
+% really needed to confirm.
+
+%% Clear
+clear all
+close all
+
+%% Try on 1-D functions
+a = @(x) x^3;
+b = @(x) 3*x^2;
+c = @(x) 6*x;
+d = @(x) 6;
+x = 10;
+dx = 1;
+[h1,atest1,atest2] = gradCheck(a,b,x);
+% does a'=b?
+disp(min([atest1(length(h1)) atest2(length(h1))]))
+% yes!
+[~,btest1,btest2] = gradCheck(b,c,x);
+% does b'=c?
+disp(min([btest1(length(h1)) btest2(length(h1))]))
+% yes!
+[~,ctest1,ctest2] = gradCheck(c,d,x);
+% does c'=d?
+disp(min([ctest1(length(h1)) ctest2(length(h1))]))
+% yes!
+
+%% Try on a high-dimensional quadratic
+N = 100;
+A = rand(N);
+e = @(x) x'*A*x;
+f = @(x) (A+A')*x;
+X = ones(N,1);
+dX = randi(2,[N,1]);
+[h2,etest1,etest2] = gradCheck(e,f,X);
+% does e'=f?
+disp(min([etest1(length(h2)) etest2(length(h2))]))
+% yes!
+
+%% Try scaling
+sa = @(x) 100*a(x);
+sb = @(x) 100*b(x);
+[~,satest1,satest2] = gradCheck(sa,sb,x);
+% does sa'=sb?
+disp(min([satest1(length(h1)) satest2(length(h1))]))
+% yes!
+
+%% Can it distinguish slightly off gradients?
+ib = @(x) .9*b(x);
+[~,iatest1,iatest2] = gradCheck(a,ib,x);
+% does a'=ib?
+disp(min([iatest1(length(h1)) iatest2(length(h1))]))
+% no!
+
+%% Now try it on our negative log-liklihood function
+load('spamData.mat')
+Xtrain = log(Xtrain+0.1);
+Xtest = log(Xtest+0.1);
+ytrain = 2*ytrain-1;
+ytest = 2*ytest-1;
+p = length(Xtrain(1,:));
+ntrain = length(Xtrain(:,1));
+ntest = length(Xtest(:,1));
+sigma = @(a) 1./(1+exp(-a));
+muTrain = @(w) sigma(ytrain.*(Xtrain*w));
+lTrain = @(w) -sum(log(muTrain(w)));
+gradlTrain = @(w) -Xtrain'*(ytrain.*(1-muTrain(w)));
+w0 = ones(p,1);
+[h,test1,test2] = gradCheck(lTrain,gradlTrain,w0);
+% does lTrain'=gradlTrain?
+disp(min([test1(length(h1)) test2(length(h1))]))
+% yes!
+##### SOURCE END #####
+--></body></html>
