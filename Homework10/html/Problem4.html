@@ -1,0 +1,194 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Liam Madden</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-11-01"><meta name="DC.source" content="Problem4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Liam Madden</h1><!--introduction--><p>APPM 5720 Homework 10 Problem 4</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Abstract</a></li><li><a href="#2">Clear</a></li><li><a href="#3">Load</a></li><li><a href="#4">Sample</a></li><li><a href="#5">Objective</a></li><li><a href="#6">Recover</a></li><li><a href="#7">Listen og</a></li><li><a href="#8">Listen downsampled</a></li><li><a href="#9">Listen recovered</a></li></ul></div><h2 id="1">Abstract</h2><p>In this experiment we tried to recover a sound file after downsampling it. The sound file we used was Handel's Messiah. We downsampled by a factor of 4. At this point, the sound file was not even distinguishable as music. Then solved, using Newton's method, for the parameter tau. This took 3 iterations. We used this parameter to make our least squares problem equivalent to the basis pursuit problem. We solved the latter for x and then computed our recovered signal from x. The recovered sound file sounds just like the original but with a little more static.</p><h2 id="2">Clear</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+clc
+</pre><h2 id="3">Load</h2><pre class="codeinput">load <span class="string">handel.mat</span>
+<span class="comment">%spectrogram(y,5e2,[],[],Fs)</span>
+N = length(y);
+M = floor(N/4);
+</pre><h2 id="4">Sample</h2><pre class="codeinput">rng(329)
+idx = randperm(N,M);
+idx = sort(idx);
+psi = @(x) x(idx);
+psiadj = @(x) accumarray(idx',x,[N 1]);
+b = psi(y);
+</pre><h2 id="5">Objective</h2><pre class="codeinput">win = sin( pi*( (1:1024) + 1/2)/(1024) );
+A = @(x) psi(adjointShortTimeDCT(x,win,N));
+Aadj = @(x) forwardShortTimeDCT(psiadj(x),win);
+f = @(x) .5*norm(A(x)-b)^2;
+Lf = 1; <span class="comment">% norm(A'*A);</span>
+gradf = @(x) Aadj(A(x)-b);
+x0 = zeros(147456,1);
+</pre><h2 id="6">Recover</h2><pre class="codeinput">tol = 1e-6;
+maxIter = 1e4;
+minIter = 1e3;
+newtol = 1e-5;
+err = newtol + 1;
+counter = 1;
+tau = 1;
+<span class="keyword">while</span> err &gt;= newtol
+    prox = @(x,gamma) project_l1(x,tau);
+    x = fista(x0,f,gradf,Lf,prox,tol,maxIter,minIter);
+    xtau = x(:,length(x(1,:)));
+    z = b - A(xtau);
+    nu = z/norm(z);
+    lambda = norm(Aadj(nu),Inf);
+    newtau = tau+f(xtau)/lambda;
+    err = abs(newtau-tau);
+    tau = newtau;
+    counter = counter + 1;
+<span class="keyword">end</span>
+yhat = adjointShortTimeDCT(xtau,win,N);
+</pre><h2 id="7">Listen og</h2><pre class="codeinput">playerObj1 = audioplayer(y,Fs);
+play( playerObj1 )
+</pre><h2 id="8">Listen downsampled</h2><pre class="codeinput">playerObj2 = audioplayer(b,Fs/4);
+play( playerObj2 )
+</pre><h2 id="9">Listen recovered</h2><pre class="codeinput">playerObj3 = audioplayer(yhat,Fs);
+play( playerObj3 )
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Liam Madden
+% APPM 5720
+% Homework 10
+% Problem 4
+
+%% Abstract
+% In this experiment we tried to recover a sound file after downsampling
+% it. The sound file we used was Handel's Messiah. We downsampled by a
+% factor of 4. At this point, the sound file was not even distinguishable
+% as music. Then solved, using Newton's method, for the parameter tau. This
+% took 3 iterations. We used this parameter to make our least squares
+% problem equivalent to the basis pursuit problem. We solved the latter for
+% x and then computed our recovered signal from x. The recovered sound file
+% sounds just like the original but with a little more static.
+
+%% Clear
+clear all
+close all
+clc
+
+%% Load
+load handel.mat
+%spectrogram(y,5e2,[],[],Fs)
+N = length(y);
+M = floor(N/4);
+
+%% Sample
+rng(329)
+idx = randperm(N,M);
+idx = sort(idx);
+psi = @(x) x(idx);
+psiadj = @(x) accumarray(idx',x,[N 1]);
+b = psi(y);
+
+%% Objective
+win = sin( pi*( (1:1024) + 1/2)/(1024) );
+A = @(x) psi(adjointShortTimeDCT(x,win,N));
+Aadj = @(x) forwardShortTimeDCT(psiadj(x),win);
+f = @(x) .5*norm(A(x)-b)^2;
+Lf = 1; % norm(A'*A);
+gradf = @(x) Aadj(A(x)-b);
+x0 = zeros(147456,1);
+
+%% Recover
+tol = 1e-6;
+maxIter = 1e4;
+minIter = 1e3;
+newtol = 1e-5;
+err = newtol + 1;
+counter = 1;
+tau = 1;
+while err >= newtol
+    prox = @(x,gamma) project_l1(x,tau);
+    x = fista(x0,f,gradf,Lf,prox,tol,maxIter,minIter);
+    xtau = x(:,length(x(1,:)));
+    z = b - A(xtau);
+    nu = z/norm(z);
+    lambda = norm(Aadj(nu),Inf);
+    newtau = tau+f(xtau)/lambda;
+    err = abs(newtau-tau);
+    tau = newtau;
+    counter = counter + 1;
+end
+yhat = adjointShortTimeDCT(xtau,win,N);
+
+%% Listen og
+playerObj1 = audioplayer(y,Fs);
+play( playerObj1 )
+
+%% Listen downsampled
+playerObj2 = audioplayer(b,Fs/4);
+play( playerObj2 )
+
+%% Listen recovered
+playerObj3 = audioplayer(yhat,Fs);
+play( playerObj3 )
+##### SOURCE END #####
+--></body></html>
