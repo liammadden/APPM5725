@@ -1,0 +1,279 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Liam Madden</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-18"><meta name="DC.source" content="Problem2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Liam Madden</h1><!--introduction--><p>Homework 8 Problem 2</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Abstract</a></li><li><a href="#2">Clear</a></li><li><a href="#3">Load</a></li><li><a href="#4">Format</a></li><li><a href="#5">Indices</a></li><li><a href="#6">Objective function (negative log-likelihood)</a></li><li><a href="#7">Solve</a></li><li><a href="#8">Plot convergence</a></li><li><a href="#9">Plot weights</a></li><li><a href="#10">Training mis-classification rate (without penalty)</a></li><li><a href="#11">Training mis-classification rate (with penalty)</a></li><li><a href="#12">Testing mis-classification rate (without penalty)</a></li><li><a href="#13">Testing mis-classification rate (with penalty)</a></li></ul></div><h2 id="1">Abstract</h2><p>We added an l1 penalty to our objective. We then applied fista to both the original problem and the penalized problem. The original problem converged very quickly, but the penalized problem converged quicker. However, the penalized problem converged to an objective value (according to our original objective function) that was slightly higher than what the original problem converged to. Also, the weighting of features found for the original problem used a lot more of the features than the weighting found for the penalized problem. This makes sense since the penalized problem had an added penalty that essentially penalized nonzeros in the weighting (since the l1 norm is generally used as a convex relaxation of the l0 "norm"). However, the training mis-classification rates for the two problems were both very small: 5.15% and 5.92% respectively. The same was true for the testing mis-classification rates: 5.19% and 5.92%. This shows that the added l1 penalty only made the classification accuracy slightly worse, and so is worth the added benefit of avoiding overfitting the data.</p><h2 id="2">Clear</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2 id="3">Load</h2><pre class="codeinput">load(<span class="string">'spamData.mat'</span>)
+</pre><h2 id="4">Format</h2><pre class="codeinput">Xtrain = log(Xtrain+0.1);
+Xtest = log(Xtest+0.1);
+ytrain = 2*ytrain-1;
+ytest = 2*ytest-1;
+</pre><h2 id="5">Indices</h2><pre class="codeinput">p = length(Xtrain(1,:));
+ntrain = length(Xtrain(:,1));
+ntest = length(Xtest(:,1));
+</pre><h2 id="6">Objective function (negative log-likelihood)</h2><pre class="codeinput">sigma = @(a) 1./(1+exp(-a));
+muTrain = @(w) sigma(ytrain.*(Xtrain*w));
+lTrain = @(w) -sum(log(muTrain(w)));
+gradlTrain = @(w) -Xtrain'*(ytrain.*(1-muTrain(w)));
+w0 = ones(p,1);
+prox = @(y,gamma) y;
+proxr = @(y,gamma) sign(y).*max(abs(y)-gamma*5,0); <span class="comment">% 5 is lambda</span>
+Lf = norm(Xtrain)^2/4;
+</pre><h2 id="7">Solve</h2><pre class="codeinput">tol = .001;
+w = fista(w0,lTrain,gradlTrain,Lf,prox,tol,1e4,1e3);
+wstar = w(:,length(w(1,:)));
+wr = fista(w0,lTrain,gradlTrain,Lf,proxr,tol,1e4,1e3);
+wrstar = wr(:,length(wr(1,:)));
+</pre><h2 id="8">Plot convergence</h2><pre class="codeinput">iter = [1:length(w(1,:))]';
+iterr = [1:length(wr(1,:))]';
+figure(1)
+plot(iter,log(lTrain(w(:,iter))),<span class="string">'-k'</span>,iterr,log(lTrain(wr(:,iterr))),<span class="string">'-r'</span>)
+xlabel({<span class="string">'Number of iterations'</span>,<span class="string">'Both iterations converge very quickly. The penalized problem converges'</span>,<span class="string">'slightly quicker though. However, it converges to an objective'</span>,<span class="string">'value that is slightly higher than the optimal.'</span>})
+ylabel(<span class="string">'Log of negative log-liklihood'</span>)
+legend(<span class="string">'Without l1 penalty'</span>,<span class="string">'With l1 penalty'</span>)
+title(<span class="string">'Objective convergence of fista'</span>)
+</pre><img vspace="5" hspace="5" src="Problem2_01.png" alt=""> <h2 id="9">Plot weights</h2><pre class="codeinput">figure(2)
+plot(1:p,wstar,<span class="string">'ok'</span>,1:p,wrstar,<span class="string">'or'</span>)
+xlabel({<span class="string">'Feature index'</span>,<span class="string">'The original problem gives us a weighting that uses a lot of'</span>,<span class="string">'the features to some extent. The penalized problem, on the other hand,'</span>,<span class="string">'eliminates many of the features that the original problem used.'</span>})
+ylabel(<span class="string">'Feature weight'</span>)
+legend(<span class="string">'Without l1 penalty'</span>,<span class="string">'With l1 penalty'</span>)
+title(<span class="string">'Feature weights'</span>)
+</pre><img vspace="5" hspace="5" src="Problem2_02.png" alt=""> <h2 id="10">Training mis-classification rate (without penalty)</h2><pre class="codeinput">sigmawstar = sigma(Xtrain*wstar);
+ytrainApprox = ones(ntrain,1);
+<span class="keyword">for</span> i = 1:ntrain
+    <span class="keyword">if</span> sigmawstar(i) &lt;= 0.5
+        ytrainApprox(i) = -1;
+    <span class="keyword">else</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+errorTrain = norm(ytrainApprox-ytrain,1)/2/ntrain;
+disp(errorTrain)
+</pre><pre class="codeoutput">    0.0515
+
+</pre><h2 id="11">Training mis-classification rate (with penalty)</h2><pre class="codeinput">sigmawrstar = sigma(Xtrain*wrstar);
+ytrainApproxr = ones(ntrain,1);
+<span class="keyword">for</span> i = 1:ntrain
+    <span class="keyword">if</span> sigmawrstar(i) &lt;= 0.5
+        ytrainApproxr(i) = -1;
+    <span class="keyword">else</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+errorTrainr = norm(ytrainApproxr-ytrain,1)/2/ntrain;
+disp(errorTrainr)
+</pre><pre class="codeoutput">    0.0519
+
+</pre><h2 id="12">Testing mis-classification rate (without penalty)</h2><pre class="codeinput">sigmawstarTest = sigma(Xtest*wstar);
+ytestApprox = ones(ntest,1);
+<span class="keyword">for</span> i = 1:ntest
+    <span class="keyword">if</span> sigmawstarTest(i) &lt;= 0.5
+        ytestApprox(i) = -1;
+    <span class="keyword">else</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+errorTest = norm(ytestApprox-ytest,1)/2/ntest;
+disp(errorTest)
+</pre><pre class="codeoutput">    0.0592
+
+</pre><h2 id="13">Testing mis-classification rate (with penalty)</h2><pre class="codeinput">sigmawrstarTest = sigma(Xtest*wrstar);
+ytestApproxr = ones(ntest,1);
+<span class="keyword">for</span> i = 1:ntest
+    <span class="keyword">if</span> sigmawrstarTest(i) &lt;= 0.5
+        ytestApproxr(i) = -1;
+    <span class="keyword">else</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+errorTestr = norm(ytestApproxr-ytest,1)/2/ntest;
+disp(errorTestr)
+</pre><pre class="codeoutput">    0.0592
+
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Liam Madden
+% Homework 8
+% Problem 2
+
+%% Abstract
+% We added an l1 penalty to our objective. We then applied fista to both
+% the original problem and the penalized problem. The original problem
+% converged very quickly, but the penalized problem converged quicker.
+% However, the penalized problem converged to an objective value
+% (according to our original objective function) that was slightly higher
+% than what the original problem converged to. Also, the weighting of
+% features found for the original problem used a lot more of the features
+% than the weighting found for the penalized problem. This makes sense
+% since the penalized problem had an added penalty that essentially
+% penalized nonzeros in the weighting (since the l1 norm is generally used
+% as a convex relaxation of the l0 "norm"). However, the training
+% mis-classification rates for the two problems were both very small: 5.15%
+% and 5.92% respectively. The same was true for the testing
+% mis-classification rates: 5.19% and 5.92%. This shows that the added l1
+% penalty only made the classification accuracy slightly worse, and so is
+% worth the added benefit of avoiding overfitting the data.
+
+%% Clear
+clear all
+close all
+
+%% Load
+load('spamData.mat')
+
+%% Format
+Xtrain = log(Xtrain+0.1);
+Xtest = log(Xtest+0.1);
+ytrain = 2*ytrain-1;
+ytest = 2*ytest-1;
+
+%% Indices
+p = length(Xtrain(1,:));
+ntrain = length(Xtrain(:,1));
+ntest = length(Xtest(:,1));
+
+%% Objective function (negative log-likelihood)
+sigma = @(a) 1./(1+exp(-a));
+muTrain = @(w) sigma(ytrain.*(Xtrain*w));
+lTrain = @(w) -sum(log(muTrain(w)));
+gradlTrain = @(w) -Xtrain'*(ytrain.*(1-muTrain(w)));
+w0 = ones(p,1);
+prox = @(y,gamma) y;
+proxr = @(y,gamma) sign(y).*max(abs(y)-gamma*5,0); % 5 is lambda
+Lf = norm(Xtrain)^2/4;
+
+%% Solve
+tol = .001;
+w = fista(w0,lTrain,gradlTrain,Lf,prox,tol,1e4,1e3);
+wstar = w(:,length(w(1,:)));
+wr = fista(w0,lTrain,gradlTrain,Lf,proxr,tol,1e4,1e3);
+wrstar = wr(:,length(wr(1,:)));
+
+%% Plot convergence
+iter = [1:length(w(1,:))]';
+iterr = [1:length(wr(1,:))]';
+figure(1)
+plot(iter,log(lTrain(w(:,iter))),'-k',iterr,log(lTrain(wr(:,iterr))),'-r')
+xlabel({'Number of iterations','Both iterations converge very quickly. The penalized problem converges','slightly quicker though. However, it converges to an objective','value that is slightly higher than the optimal.'})
+ylabel('Log of negative log-liklihood')
+legend('Without l1 penalty','With l1 penalty')
+title('Objective convergence of fista')
+
+%% Plot weights
+figure(2)
+plot(1:p,wstar,'ok',1:p,wrstar,'or')
+xlabel({'Feature index','The original problem gives us a weighting that uses a lot of','the features to some extent. The penalized problem, on the other hand,','eliminates many of the features that the original problem used.'})
+ylabel('Feature weight')
+legend('Without l1 penalty','With l1 penalty')
+title('Feature weights')
+
+%% Training mis-classification rate (without penalty)
+sigmawstar = sigma(Xtrain*wstar);
+ytrainApprox = ones(ntrain,1);
+for i = 1:ntrain
+    if sigmawstar(i) <= 0.5
+        ytrainApprox(i) = -1;
+    else
+    end
+end
+errorTrain = norm(ytrainApprox-ytrain,1)/2/ntrain;
+disp(errorTrain)
+
+%% Training mis-classification rate (with penalty)
+sigmawrstar = sigma(Xtrain*wrstar);
+ytrainApproxr = ones(ntrain,1);
+for i = 1:ntrain
+    if sigmawrstar(i) <= 0.5
+        ytrainApproxr(i) = -1;
+    else
+    end
+end
+errorTrainr = norm(ytrainApproxr-ytrain,1)/2/ntrain;
+disp(errorTrainr)
+
+%% Testing mis-classification rate (without penalty)
+sigmawstarTest = sigma(Xtest*wstar);
+ytestApprox = ones(ntest,1);
+for i = 1:ntest
+    if sigmawstarTest(i) <= 0.5
+        ytestApprox(i) = -1;
+    else
+    end
+end
+errorTest = norm(ytestApprox-ytest,1)/2/ntest;
+disp(errorTest)
+
+%% Testing mis-classification rate (with penalty)
+sigmawrstarTest = sigma(Xtest*wrstar);
+ytestApproxr = ones(ntest,1);
+for i = 1:ntest
+    if sigmawrstarTest(i) <= 0.5
+        ytestApproxr(i) = -1;
+    else
+    end
+end
+errorTestr = norm(ytestApproxr-ytest,1)/2/ntest;
+disp(errorTestr)
+##### SOURCE END #####
+--></body></html>
